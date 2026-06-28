@@ -1,7 +1,9 @@
-//v1.1
-//add serial blink counter output
+//v1.2
+//control LED blink speed using potentiometer
 
 const int LED_PIN = 13;
+const int POT_PIN = A0;
+
 int blinkCount = 0;
 
 void setup() {
@@ -10,13 +12,21 @@ void setup() {
 }
 
 void loop() {
+  int potValue = analogRead(POT_PIN);
+
+  // Map potentiometer value to 100–1000 ms
+  int blinkDelay = map(potValue, 0, 1023, 100, 1000);
+
   digitalWrite(LED_PIN, HIGH);
-  delay(500);
+  delay(blinkDelay);
 
   digitalWrite(LED_PIN, LOW);
-  delay(500);
+  delay(blinkDelay);
 
   blinkCount++;
   Serial.print("Blink count: ");
-  Serial.println(blinkCount);
+  Serial.print(blinkCount);
+  Serial.print(" | Delay: ");
+  Serial.print(blinkDelay);
+  Serial.println(" ms");
 }
